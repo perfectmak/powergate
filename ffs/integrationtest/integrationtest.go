@@ -15,7 +15,9 @@ import (
 	ipfsfiles "github.com/ipfs/go-ipfs-files"
 	httpapi "github.com/ipfs/go-ipfs-http-client"
 	"github.com/ipfs/interface-go-ipfs-core/options"
+	"github.com/ory/dockertest"
 	"github.com/stretchr/testify/require"
+	dsmongo "github.com/textileio/go-ds-mongo"
 	"github.com/textileio/powergate/deals"
 	dealsModule "github.com/textileio/powergate/deals/module"
 	"github.com/textileio/powergate/ffs"
@@ -78,7 +80,23 @@ func RequireFilStored(ctx context.Context, t require.TestingT, client *apistruct
 
 // NewAPI returns a new set of components for FFS.
 func NewAPI(t tests.TestingTWithCleanup, numMiners int) (*httpapi.HttpApi, *apistruct.FullNodeStruct, *api.API, func()) {
-	ds := tests.NewTxMapDatastore()
+	pool, err := dockertest.NewPool("")
+	require.NoError(t, err)
+
+	mongoDocker, err := pool.Run("mongo", "latest", []string{})
+	require.NoError(t, err)
+
+	err = mongoDocker.Expire(180)
+	require.NoError(t, err)
+
+	time.Sleep(time.Second * 3)
+	t.Cleanup(func() {
+		err = pool.Purge(mongoDocker)
+		require.NoError(t, err)
+	})
+
+	ds, err := dsmongo.New(context.Background(), "mongodb://127.0.0.1:"+mongoDocker.GetPort("27017/tcp"), "test", "testcol")
+	require.NoError(t, err)
 	ipfs, ipfsMAddr := CreateIPFS(t)
 	addr, client, ms := NewDevnet(t, numMiners, ipfsMAddr)
 	manager, closeManager := NewFFSManager(t, ds, client, addr, ms, ipfs)

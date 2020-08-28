@@ -20,10 +20,11 @@ require (
 	github.com/google/go-cmp v0.5.1
 	github.com/google/uuid v1.1.1
 	github.com/gosuri/uilive v0.0.4
+	github.com/gotestyourself/gotestyourself v2.2.0+incompatible // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
 	github.com/improbable-eng/grpc-web v0.13.0
 	github.com/ipfs/go-cid v0.0.7
-	github.com/ipfs/go-datastore v0.4.4
+	github.com/ipfs/go-datastore v0.4.5
 	github.com/ipfs/go-ds-badger2 v0.1.1-0.20200708190120-187fc06f714e
 	github.com/ipfs/go-ipfs-files v0.0.8
 	github.com/ipfs/go-ipfs-http-client v0.0.6-0.20200512220018-7002cce28cb1
@@ -44,6 +45,7 @@ require (
 	github.com/multiformats/go-multihash v0.0.14
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/olekukonko/tablewriter v0.0.4
+	github.com/ory/dockertest v3.3.5+incompatible
 	github.com/ory/dockertest/v3 v3.6.0
 	github.com/oschwald/geoip2-golang v1.4.0
 	github.com/rs/cors v1.7.0
@@ -51,6 +53,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
+	github.com/textileio/go-ds-mongo v0.0.0-20200827184326-0e5267c1a730
 	go.opencensus.io v0.22.4
 	google.golang.org/grpc v1.31.0
 	google.golang.org/protobuf v1.25.0

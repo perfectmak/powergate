@@ -116,6 +116,7 @@ type Config struct {
 	RepoPath             string
 	GatewayHostAddr      string
 	MaxMindDBFolder      string
+	MongoURI             string
 }
 
 // NewServer starts and returns a new server with the given configuration.
@@ -167,11 +168,17 @@ func NewServer(conf Config) (*Server, error) {
 		return nil, fmt.Errorf("creating repo folder: %s", err)
 	}
 
-	log.Info("Opening badger database...")
-	opts := &badger.DefaultOptions
-	ds, err := badger.NewDatastore(path, opts)
-	if err != nil {
-		return nil, fmt.Errorf("opening datastore on repo: %s", err)
+	var ds datastore.Datastore
+	if conf.MongoURI != "" {
+		log.Info("Opening MongoDB database...")
+
+	} else {
+		log.Info("Opening badger database...")
+		opts := &badger.DefaultOptions
+		ds, err = badger.NewDatastore(path, opts)
+		if err != nil {
+			return nil, fmt.Errorf("opening datastore on repo: %s", err)
+		}
 	}
 
 	log.Info("Wiring internal components...")

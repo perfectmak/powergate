@@ -2,7 +2,7 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - jsign/supportmongo
   pull_request:
     branches:
       - master
